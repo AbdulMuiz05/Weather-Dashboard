@@ -1116,9 +1116,11 @@
         <script>
             const apiKey = "92c9d79f43a5db347ea59769424bc4eb";
             let currentUnit = "metric";
-            let currentCity = "Dhaka";
+            let currentCity = "";
+
             function getWeather(city) {
                 currentCity = city;
+                localStorage.setItem("lastCity", city);
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${currentUnit}`)
                 .then(response => response.json())
                 .then(data => {
@@ -1289,9 +1291,14 @@
                 }
             }
 
-            getWeather("Dhaka");
-            getForecast("Dhaka");
-
+            const lastCity = localStorage.getItem("lastCity");
+            if (lastCity) {
+                getWeather(lastCity);
+                getForecast(lastCity);
+            }
+            else {
+                getCurrentLocation();
+            }
             getCountryWeather(
                 "Canberra",
                 country1City,
@@ -1314,7 +1321,6 @@
                 fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=${currentUnit}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (data.cod != "200") {
                         return;
                     }
