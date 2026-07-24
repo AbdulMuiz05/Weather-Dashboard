@@ -87,17 +87,21 @@
                 height:56px;
                 background:#1E1E1E;
                 border-radius:34px;
+                position:relative;
                 display:flex;
                 align-items:center;
                 justify-content:space-between;
                 padding-left:16px;
                 padding-right:0;
+                cursor: pointer;
             }
             .theme-toggle img{
                 width:24px;
                 height:24px;
+                z-index:2;
             }
             .toggle-circle{
+                position: absolute;
                 width:56px;
                 height:56px;
                 border-radius:50%;
@@ -105,10 +109,16 @@
                 display:flex;
                 justify-content:center;
                 align-items:center;
+                left: 48px;
+                transition:0.3s ease;
                 box-shadow:-4px 0px 4px rgba(0,0,0,.25),
                 inset 1px 4px 4px rgba(0,0,0,.25),
                 inset -4px 0px 4px rgba(0,0,0,.25),
                 inset 4px -3px 8px rgba(129,129,129,.25);
+            }
+            .moon-icon{
+                position: relative;
+                left: -15px;
             }
 
             .main-content{
@@ -178,14 +188,17 @@
                 align-items:center;
             }
             .location{
-                width:228px;
+                width:fit-content;
+                min-width:180px;
+                max-width:420px;
                 height:40px;
+                padding:0 20px;
                 background:#363636;
                 border-radius:16px;
                 display:flex;
                 align-items:center;
-                justify-content:center;
-                gap:8px;
+                justify-content:flex-start;
+                gap:10px;
             }
             .location img{
                 width:24px;
@@ -196,6 +209,9 @@
                 font-weight:400;
                 line-height:22px;
                 color:#FFFFFF;
+                white-space:nowrap;
+                overflow:hidden;
+                text-overflow:ellipsis;
             }
             .unit{
                 width:56px;
@@ -205,16 +221,56 @@
                 display:flex;
                 justify-content:center;
                 align-items:center;
+                position:relative;
+                cursor:pointer;
+            }
+            .unit-dropdown{
+                position:absolute;
+                top:48px;
+                right:0;
+                width:170px;
+                background:#272727;
+                border-radius:12px;
+                overflow:hidden;
+                opacity:0;
+                visibility:hidden;
+                transform:translateY(-10px);
+                transition:0.25s;
+                z-index:1000;
+                white-space:nowrap;
+            }
+            .unit-option{
+                padding:12px 16px;
+                color:#fff;
+                cursor:pointer;
+                transition:0.2s;
+                white-space:nowrap;
+                font-size:15px;
+            }
+            .selected-unit{
+                width:100%;
+                height:100%;
+                display:flex;
+                justify-content:center;
+                align-items:center;
                 gap:8px;
             }
-            .unit img:first-child{
-                width:24px;
-                height:24px;
-            }
-            .unit img:last-child{
+            .selected-unit img{
                 width:16px;
                 height:16px;
             }
+            .unit-dropdown.show{
+                opacity:1;
+                visibility:visible;
+                transform:translateY(0);
+            }
+            #unitArrow{
+                transition:.25s;
+            }
+            .unit.open #unitArrow{
+                transform:rotate(180deg);
+            }
+          
             .weather-info{
                 display:flex;
                 justify-content:space-between;
@@ -286,6 +342,17 @@
                 border-radius:24px;
                 padding:24px;
             }
+            .highlight-card .highlight-value{
+                text-align: right;
+            }
+            .highlight-card .highlight-value .symbol{
+                font-size:14px;
+                font-weight:500;
+                opacity:0.9;
+            }
+            .highlight-card .highlight-description{
+                text-align: right;
+            }
             .highlight-card h2{
                 font-size:24px;
                 font-weight:600;
@@ -322,14 +389,21 @@
                 gap:71px;
                 padding:35px 16px;
             }
+            .highlight-header{
+                display:flex;
+                align-items:center;
+                gap:10px;
+                width:100%;
+            }
             .highlight-header img{
                 width:24px;
                 height:24px;
+                object-fit:contain;
+                display:block;
             }
             .highlight-header span{
-                font-size:16px;
-                font-weight:500;
-                line-height:19px;
+                white-space:nowrap;
+                line-height:1;
             }
             .highlight-value{
                 font-size:24px;
@@ -357,6 +431,7 @@
                 font-weight:600;
                 line-height:29px;
                 color:#FFFFFF;
+                white-space: nowrap;
             }
             .highlight-item.large img{
                 width:64px;
@@ -376,6 +451,9 @@
                 border-radius:24px;
                 padding:24px;
                 margin-top: -18px;
+            }
+            .countries-card{
+                overflow: hidden;
             }
             .countries-header{
                 display:flex;
@@ -457,6 +535,26 @@
                 color:#B9B9B9;
                 font-weight:400;
             }
+            .country-list{
+                height:304px;
+                overflow-y:auto;
+                overflow-x:hidden;
+                padding-right:6px;
+            }
+            .country-list::-webkit-scrollbar{
+                width:8px;
+            }
+
+            .country-list::-webkit-scrollbar-track{
+                background:transparent;
+            }
+            .country-list::-webkit-scrollbar-thumb{
+                background:#666;
+                border-radius:20px;
+            }
+            .country-list::-webkit-scrollbar-thumb:hover{
+                background:#888;
+            }
 
             .forecast-card{
                 width:664px;
@@ -476,6 +574,7 @@
             .forecast-list{
                 display:flex;
                 gap:18px;
+                justify-content: space-evenly;
             }
             .forecast-item{
                 width:104px;
@@ -767,7 +866,7 @@
                     font-size:20px;
                 }
                 .forecast-list{
-                    justify-content:space-between;
+                    justify-content:space-evenly;
                     gap:10px;
                 }
                 .forecast-day{
@@ -869,6 +968,10 @@
             .light-mode .search-box {
                 background: white;
             }
+            .light-mode .main-content #welcome,
+            .light-mode .main-content #greeting{
+                color: #000;
+            }
             .light-mode .highlight-header span,
             .light-mode .highlight-value,
             .light-mode .highlight-description {
@@ -891,13 +994,171 @@
             .light-mode hr {
                 border-color: #bdbdbd;
             }
-            .light-mode .welcome,
-            .light-mode #greeting {
-                color: #222;
+            body.light-mode .theme-toggle{
+                background:#FFFFFF;
+            }
+            body.light-mode .toggle-circle{
+                left: 0;
+                background:#F3F3F3;
+            }
+            body:not(.light-mode) .toggle-circle{
+                left:48px;
+            }
+
+            body.light-mode .weather-card{
+                background: rgba(255,255,255,0.65);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255,255,255,0.3);
+                color: #000;
+            }
+            body.light-mode .weather-card,
+            body.light-mode .weather-card h1,
+            body.light-mode .weather-card h2,
+            body.light-mode .weather-card h3,
+            body.light-mode .weather-card p,
+            body.light-mode .weather-card span{
+                color:#000;
+            }
+            body.light-mode .location{
+                background:#fff;
+            }
+            body.light-mode .location span{
+                color:#000;
+            }
+            body.light-mode .location img{
+                filter: brightness(0);
+            }
+            body.light-mode .unit{
+                background:#363636;
+            }
+            body.light-mode .weather-card #day{
+                color: #000;
+            }
+            body.light-mode .weather-card #date{
+                color: #000;
+            }
+            body.light-mode .weather-card #condition{
+                color: #000;
+            }
+            body.light-mode .weather-card #feelsLike{
+                color: #000;
+            }
+            body.light-mode .weather-card #temperature{
+                color: #000;
+            }
+            body.light-mode .weather-card #minMaxTemp{
+                color: #000;
+            }
+            body.light-mode .unit span{
+                color:#fff;
+            }
+            body.light-mode .unit{
+                background: #ffffff;
+            }
+            body.light-mode #unitText{
+                color: #000;
+            }
+            body.light-mode .unit img{
+                filter: brightness(0);
+            }
+            body.light-mode .unit-dropdown{
+                background:#FFFFFF;
+                border:1px solid #E0E0E0;
+                box-shadow:0 8px 20px rgba(0,0,0,0.15);
+            }
+            body.light-mode .unit-option{
+                color:#000;
+            }
+            body.light-mode .unit-option:hover{
+                background:#F3F3F3;
+            }
+
+            body.light-mode .highlight-card{
+                background: rgba(255,255,255,0.65);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255,255,255,0.3);
+            }
+            body.light-mode .highlight-item{
+                background:#ffffff;
+            }
+            body.light-mode .highlight-card h2{
+                color:#000;
+            }
+            body.light-mode .highlight-header span,
+            body.light-mode .highlight-value,
+            body.light-mode .highlight-description,
+            body.light-mode .sun-card span,
+            body.light-mode .sun-card h3{
+                color:#000;
+            }
+            body.light-mode .highlight-header img{
+                filter: brightness(0);
+            }
+            body.light-mode .highlight-item.large img{
+                filter:none;
+            }
+
+            body.light-mode .countries-card{
+                background: rgba(255,255,255,0.65);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255,255,255,0.3);
+            }
+            body.light-mode .country-item{
+                background:#ffffff;
+            }
+            body.light-mode .countries-header h2,
+            body.light-mode .see-all span{
+                color:#000;
+            }
+            body.light-mode .see-all img{
+                filter: brightness(0);
+            }
+            body.light-mode .country-name,
+            body.light-mode .country-info h3,
+            body.light-mode .country-info p,
+            body.light-mode .country-temp,
+            body.light-mode .country-temp span{
+                color:#000;
+            }
+            body.light-mode .country-weather{
+                filter:none;
+            }
+            body.light-mode .country-list::-webkit-scrollbar-thumb{
+                background:#999;
+            }
+
+            body.light-mode .forecast-card{
+                background: rgba(255,255,255,0.65);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(255,255,255,0.3);
+            }
+            body.light-mode .forecast-item{
+                background:#ffffff;
+            }
+            body.light-mode .forecast-card h2{
+                color:#000;
+            }
+            body.light-mode .forecast-day-name,
+            body.light-mode .forecast-temp{
+                color:#000;
+            }
+            body.light-mode .forecast-day hr{
+                border:none;
+                height:1px;
+                background:#555;
+            }
+            body.light-mode .forecast-icon{
+                filter:none;
+            }
+            body.light-mode .sidebar-btn.active{
+                background: #E8E8E8  ;
+                border-radius:12px;
+            }
+            body.light-mode .sidebar-btn.active img{
+                filter:brightness(0);
             }
         </style>
     </head>
-
 
     <body>
         <div class="container">
@@ -926,7 +1187,7 @@
             <div class="main-content">
                 <div class="top-bar">
                      <div class="greeting">
-                        <p class="welcome" id="welcome">Hi, Zain</p>
+                        <p class="welcome" id="welcome">Hi, Muiz</p>
                         <h2 id="greeting">Good Morning</h2>
                     </div>
                     <div class="top-actions">
@@ -935,10 +1196,9 @@
                             <input type="text" id="searchInput" placeholder="Search your location">
                         </div>
                         <div class="theme-toggle" id="themeToggle">
-                            <img src="images/iconoir_sun-light.png" alt="Sun">
-                            <div class="toggle-circle">
-                                <img src="images/clarity_moon-solid.png" alt="Moon">
-                            </div>
+                            <div class="toggle-circle"></div>
+                            <img src="images/iconoir_sun-light.png" alt="Sun" class="sun-icon">
+                            <img src="images/clarity_moon-solid.png" alt="Moon" class="moon-icon">
                         </div>
                     </div>
                 </div>
@@ -950,8 +1210,14 @@
                                 <span id="cityName">Dhaka, Bangladesh</span>
                             </div>
                             <div class="unit" id="unitToggle">
-                                <span id="unitText">°C</span>
-                                <img src="images/iconamoon_arrow-down-2-duotone.png" alt="">
+                                <div class="selected-unit">
+                                    <span id="unitText">°C</span>
+                                    <img id="unitArrow" src="images/iconamoon_arrow-down-2-duotone.png" alt="">
+                                </div>
+                                <div class="unit-dropdown" id="unitDropdown">
+                                    <div class="unit-option" data-unit="metric">°C&nbsp;&nbsp;Celsius</div>
+                                    <div class="unit-option" data-unit="imperial">°F&nbsp;&nbsp;Fahrenheit</div>
+                                </div>
                             </div>
                         </div>
                         <div class="weather-info">
@@ -974,6 +1240,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="highlight-card">
                         <h2>Today's Highlight</h2>
                         <div class="highlight-grid">
@@ -981,7 +1248,7 @@
                                 <div class="highlight-header">
                                     <img src="images/solar_wind-linear.png" alt="Wind"><span>Wind Status</span>
                                 </div>
-                                <div class="highlight-value" id="windSpeed">7.90 km/h</div>
+                                <div class="highlight-value" id="windSpeed">7.90 <span class="symbol">km/h</span></div>
                                 <div class="highlight-description" id="windTime">9:00 AM</div>
                             </div>
                             <div class="highlight-item">
@@ -989,7 +1256,7 @@
                                     <img src="images/carbon_humidity.png" alt="Humidity">
                                     <span>Humidity</span>
                                 </div>
-                                <div class="highlight-value" id="humidity">85%</div>
+                                <div class="highlight-value" id="humidity">85<span class="symbol">%</span></div>
                                 <div class="highlight-description">Humidity is good</div>
                             </div>
                             <div class="highlight-item large">
@@ -1004,7 +1271,7 @@
                                     <img src="images/hugeicons_uv-02.png" alt="UV">
                                     <span>UV Index</span>
                                 </div>
-                                <div class="highlight-value">4 UV</div>
+                                <div class="highlight-value">4 <span class="symbol">UV</span></div>
                                 <div class="highlight-description">Moderate UV</div>
                             </div>
                             <div class="highlight-item">
@@ -1012,7 +1279,7 @@
                                     <img src="images/ri_eye-line.png" alt="Visibility">
                                     <span>Visibility</span>
                                 </div>
-                                <div class="highlight-value" id="visibility">5 km</div>
+                                <div class="highlight-value" id="visibility">5 <span class="symbol">km</span></div>
                                 <div class="highlight-description">9:00 AM</div>
                             </div>
                             <div class="highlight-item large">
@@ -1038,26 +1305,62 @@
                         <div class="country-list">
                             <div class="country-item">
                                 <div class="country-info">
-                                    <span class="country-name">Australia</span>
+                                    <span class="country-name" id="country1Name"></span>
                                     <h3 id="country1City">Canberra</h3>
                                     <p id="country1Condition">Sunny</p>
                                 </div>
-                                <img id="country1Icon" src="images/image 8.png" class="country-weather">
+                                <img id="country1Icon" class="country-weather" src="images/image 8.png">
                                 <h3 class="country-temp">
-                                    <span id="country1Temp">32°</span>
-                                    <span id="country1MinTemp">/24°</span>
+                                    <span id="country1Temp">32°C</span>
+                                    <span id="country1MinTemp">/24°C</span>
                                 </h3>
                             </div>
                             <div class="country-item">
                                 <div class="country-info">
-                                    <span class="country-name">Japan</span>
+                                    <span class="country-name" id="country2Name"></span>
                                     <h3 id="country2City">Tokyo</h3>
-                                    <p id="country2Condition">Mostly Sunny</p>
+                                    <p id="country2Condition">Clouds</p>
                                 </div>
-                                <img id="country2Icon" src="images/image 7.png" class="country-weather">
+                                <img id="country2Icon" class="country-weather" src="images/image 7.png">
                                 <h3 class="country-temp">
-                                    <span id="country2Temp">30°</span>
-                                    <span id="country2MinTemp">/19°</span>
+                                    <span id="country2Temp">30°C</span>
+                                    <span id="country2MinTemp">/19°C</span>
+                                </h3>
+                            </div>
+                            <div class="country-item">
+                                <div class="country-info">
+                                    <span class="country-name" id="country3Name"></span>
+                                    <h3 id="country3City"></h3>
+                                    <p id="country3Condition"></p>
+                                </div>
+                                <img id="country3Icon" class="country-weather">
+                                <h3 class="country-temp">
+                                    <span id="country3Temp"></span>
+                                    <span id="country3MinTemp"></span>
+                                </h3>
+                            </div>
+                            <div class="country-item">
+                                <div class="country-info">
+                                    <span class="country-name" id="country4Name"></span>
+                                    <h3 id="country4City"></h3>
+                                    <p id="country4Condition"></p>
+                                </div>
+                                <img id="country4Icon" class="country-weather">
+                                <h3 class="country-temp">
+                                    <span id="country4Temp"></span>
+                                    <span id="country4MinTemp"></span>
+                                </h3>
+                            </div>
+                            <div class="country-item">
+                                <div class="country-info">
+                                    <span class="country-name" id="country5Name"></span>
+                                    <h3 id="country5City"></h3>
+                                    <p id="country5Condition"></p>
+                                </div>
+                                <img id="country5Icon" class="country-weather">
+                                <h3 class="country-temp">
+                                    <span id="country5Temp"></span>
+                                    <span id="country5MinTemp"></span>
                                 </h3>
                             </div>
                         </div>
@@ -1120,7 +1423,11 @@
 
             function getWeather(city) {
                 currentCity = city;
-                localStorage.setItem("lastCity", city);
+                let history = JSON.parse(localStorage.getItem("cityHistory")) || [];
+                history = history.filter(item => item.toLowerCase() !== city.toLowerCase());
+                history.unshift(city);
+                history = history.slice(0,5);
+                localStorage.setItem("cityHistory", JSON.stringify(history));
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${currentUnit}`)
                 .then(response => response.json())
                 .then(data => {
@@ -1163,10 +1470,12 @@
 
                     feelsLike.textContent = `Feels like ${Math.round(data.main.feels_like)}${currentUnit === "metric" ? "°C" : "°F"}`;
                     if (currentUnit === "metric") {
-                        windSpeed.textContent = `${(data.wind.speed * 3.6).toFixed(1)} km/h`;
+                        windSpeed.innerHTML = `${(data.wind.speed * 3.6).toFixed(1)}
+                        <span class="symbol">km/h</span>`;
                     }
                     else {
-                        windSpeed.textContent = `${data.wind.speed.toFixed(1)} mph`;
+                        windSpeed.innerHTML = `${data.wind.speed.toFixed(1)}
+                        <span class="symbol">mph</span>`;
                     }
                     const currentTime = new Date();
                     windTime.textContent =currentTime.toLocaleTimeString([], {
@@ -1174,19 +1483,30 @@
                         minute: "2-digit"
                     });
 
-                    humidity.textContent = `${data.main.humidity}%`;
-                    visibility.textContent = `${(data.visibility / 1000).toFixed(1)} km`;
+                    humidity.innerHTML = `${data.main.humidity}
+                    <span class="symbol">%</span>`;
+
+                    visibility.innerHTML = `${(data.visibility / 1000).toFixed(1)}
+                    <span class="symbol">km</span>`;
                     const sunriseTime = new Date(data.sys.sunrise * 1000);
                     const sunsetTime = new Date(data.sys.sunset * 1000);
 
-                    sunrise.textContent = sunriseTime.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    });
-                    sunset.textContent = sunsetTime.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    });
+                    sunrise.textContent = sunriseTime
+                    .toLocaleTimeString([], {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true
+                    })
+                    .replace("am", "AM")
+                    .replace("pm", "PM");
+                    sunset.textContent = sunsetTime
+                    .toLocaleTimeString([], {
+                        hour: "numeric",
+                        minute: "2-digit",
+                        hour12: true
+                    })
+                    .replace("am", "AM")
+                    .replace("pm", "PM");
 
                     const days = [
                         "Sunday",
@@ -1217,52 +1537,65 @@
             const weatherImage = document.querySelector(".weather-image");
             const searchInput = document.getElementById("searchInput");
             const searchButton = document.getElementById("searchButton");
+
             const windSpeed = document.getElementById("windSpeed");
             const windTime = document.getElementById("windTime");
             const humidity = document.getElementById("humidity");
             const visibility = document.getElementById("visibility");
             const sunrise = document.getElementById("sunrise");
             const sunset = document.getElementById("sunset");
+
             const forecastDays = document.querySelectorAll(".forecast-day-name");
             const forecastTemps = document.querySelectorAll(".forecast-temp");
             const forecastIcons = document.querySelectorAll(".forecast-icon");
+
             const country1City = document.getElementById("country1City");
             const country1Condition = document.getElementById("country1Condition");
             const country1Icon = document.getElementById("country1Icon");
             const country1Temp = document.getElementById("country1Temp");
             const country1MinTemp = document.getElementById("country1MinTemp");
+
             const country2City = document.getElementById("country2City");
             const country2Condition = document.getElementById("country2Condition");
             const country2Icon = document.getElementById("country2Icon");
             const country2Temp = document.getElementById("country2Temp");
             const country2MinTemp = document.getElementById("country2MinTemp");
+
+            const country1Name = document.getElementById("country1Name");
+            const country2Name = document.getElementById("country2Name");
+            const country3Name = document.getElementById("country3Name");
+            const country4Name = document.getElementById("country4Name");
+            const country5Name = document.getElementById("country5Name");
+
             const greeting = document.getElementById("greeting");
             const themeToggle = document.getElementById("themeToggle");
             const unitToggle = document.getElementById("unitToggle");
             const unitText = document.getElementById("unitText");
+
+            const country3City=document.getElementById("country3City");
+            const country3Condition=document.getElementById("country3Condition");
+            const country3Icon=document.getElementById("country3Icon");
+            const country3Temp=document.getElementById("country3Temp");
+            const country3MinTemp=document.getElementById("country3MinTemp");
+
+            const country4City=document.getElementById("country4City");
+            const country4Condition=document.getElementById("country4Condition");
+            const country4Icon=document.getElementById("country4Icon");
+            const country4Temp=document.getElementById("country4Temp");
+            const country4MinTemp=document.getElementById("country4MinTemp");
+
+            const country5City=document.getElementById("country5City");
+            const country5Condition=document.getElementById("country5Condition");
+            const country5Icon=document.getElementById("country5Icon");
+            const country5Temp=document.getElementById("country5Temp");
+            const country5MinTemp=document.getElementById("country5MinTemp");
 
             function searchCity() {
                 const city = searchInput.value.trim();
                 if (city !== "") {
                     getWeather(city);
                     getForecast(city);
-                    getCountryWeather(
-                        "Canberra",
-                        country1City,
-                        country1Condition,
-                        country1Icon,
-                        country1Temp,
-                        country1MinTemp
-                    );
-
-                    getCountryWeather(
-                        "Tokyo",
-                        country2City,
-                        country2Condition,
-                        country2Icon,
-                        country2Temp,
-                        country2MinTemp
-                    );
+                    loadHistory();
                     searchInput.value = "";
                 }
             }
@@ -1291,30 +1624,16 @@
                 }
             }
 
-            const lastCity = localStorage.getItem("lastCity");
-            if (lastCity) {
-                getWeather(lastCity);
-                getForecast(lastCity);
+            const history = JSON.parse(localStorage.getItem("cityHistory")) || [];
+            if(history.length){
+                getWeather(history[0]);
+                getForecast(history[0]);
             }
-            else {
+            else{
                 getCurrentLocation();
             }
-            getCountryWeather(
-                "Canberra",
-                country1City,
-                country1Condition,
-                country1Icon,
-                country1Temp,
-                country1MinTemp
-            );
-            getCountryWeather(
-                "Tokyo",
-                country2City,
-                country2Condition,
-                country2Icon,
-                country2Temp,
-                country2MinTemp
-            );
+
+            loadHistory();
             updateGreeting();
 
             function getForecast(city) {
@@ -1366,11 +1685,12 @@
                 });
             }
 
-            function getCountryWeather(city, cityElement, conditionElement, iconElement, tempElement, minTempElement) {
+            function getCountryWeather(city, countryElement, cityElement, conditionElement, iconElement, tempElement, minTempElement) {
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${currentUnit}`)
                 .then(response => response.json())
                 .then(data => {
                     cityElement.textContent = data.name;
+                    countryElement.textContent = data.sys.country;
                     conditionElement.textContent = data.weather[0].main;
                     tempElement.textContent = `${Math.round(data.main.temp)}${currentUnit === "metric" ? "°C" : "°F"}`;
                     minTempElement.textContent = `/${Math.round(data.main.temp_min)}${currentUnit === "metric" ? "°C" : "°F"}`;
@@ -1400,37 +1720,101 @@
                 });
             }
 
+            function loadHistory(){
+                const history = JSON.parse(localStorage.getItem("cityHistory")) || [];
+                const cities = [
+                    {
+                        country: country1Name,
+                        city:country1City,
+                        condition:country1Condition,
+                        icon:country1Icon,
+                        temp:country1Temp,
+                        min:country1MinTemp
+                    },
+                    {
+                        country: country2Name,
+                        city:country2City,
+                        condition:country2Condition,
+                        icon:country2Icon,
+                        temp:country2Temp,
+                        min:country2MinTemp
+                    },
+                    {
+                        country: country3Name,
+                        city:country3City,
+                        condition:country3Condition,
+                        icon:country3Icon,
+                        temp:country3Temp,
+                        min:country3MinTemp
+                    },
+                    {
+                        country: country4Name,
+                        city:country4City,
+                        condition:country4Condition,
+                        icon:country4Icon,
+                        temp:country4Temp,
+                        min:country4MinTemp
+                    },
+                    {
+                        country: country5Name,
+                        city:country5City,
+                        condition:country5Condition,
+                        icon:country5Icon,
+                        temp:country5Temp,
+                        min:country5MinTemp
+                    }
+                ];
+                history.forEach((city,index)=>{
+                    if(index>=cities.length) return;
+                    getCountryWeather(
+                        city,
+                        cities[index].country,
+                        cities[index].city,
+                        cities[index].condition,
+                        cities[index].icon,
+                        cities[index].temp,
+                        cities[index].min
+                    );
+                });
+            
+                document.querySelectorAll(".country-item").forEach((card, index) => {
+                    card.style.cursor = "pointer";
+                    card.onclick = function () {
+                        if (history[index]) {
+                            getWeather(history[index]);
+                            getForecast(history[index]);
+                        }
+                    };
+                });
+            }
+            
             themeToggle.addEventListener("click", function () {
                 document.body.classList.toggle("light-mode");
             });
 
-            unitToggle.addEventListener("click", function () {
-                if (currentUnit === "metric") {
-                    currentUnit = "imperial";
-                    unitText.textContent = "°F";
-                }
-                else {
-                    currentUnit = "metric";
-                    unitText.textContent = "°C";
-                }
-                getWeather(currentCity);
-                getForecast(currentCity);
-                getCountryWeather(
-                    "Canberra",
-                    country1City,
-                    country1Condition,
-                    country1Icon,
-                    country1Temp,
-                    country1MinTemp
-                );
-                getCountryWeather(
-                    "Tokyo",
-                    country2City,
-                    country2Condition,
-                    country2Icon,
-                    country2Temp,
-                    country2MinTemp
-                );
+            const unitDropdown = document.getElementById("unitDropdown");
+            unitToggle.addEventListener("click", function (e) {
+                e.stopPropagation();
+                unitDropdown.classList.toggle("show");
+                unitToggle.classList.toggle("open");
+            });
+
+            document.addEventListener("click", function () {
+                unitDropdown.classList.remove("show");
+                unitToggle.classList.remove("open");
+            });
+
+            document.querySelectorAll(".unit-option").forEach(option => {
+                option.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    currentUnit = this.dataset.unit;
+                    unitText.textContent = currentUnit === "metric" ? "°C" : "°F";
+                    getWeather(currentCity);
+                    getForecast(currentCity);
+                    loadHistory();
+                    unitDropdown.classList.remove("show");
+                    unitToggle.classList.remove("open");
+                });
             });
         </script>
     </body>
